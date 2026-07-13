@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PLoTM explorer</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header id="top">
+  <div class="brand">
+    <span class="logo">🧬</span>
+    <div>
+      <h1>PLoTM explorer</h1>
+      <p class="sub" id="subtitle">regulators → programs → traits · loading…</p>
+    </div>
+  </div>
+  <div class="controls">
+    <label>Disease
+      <select id="diseaseSel"></select>
+    </label>
+    <div class="seg" id="condSeg">
+      <button data-cond="rest" class="on">Rest</button>
+      <button data-cond="stim48hr">Stim 48h</button>
+    </div>
+    <button id="themeBtn" title="toggle day / night">☀️</button>
+  </div>
+</header>
+
+<main>
+  <section id="left">
+    <nav class="tabs">
+      <button data-tab="network" class="on">Network</button>
+      <button data-tab="programs">Programs</button>
+      <button data-tab="regulators">Regulators</button>
+      <button data-tab="traits">Traits</button>
+      <button data-tab="notes">Conclusions</button>
+    </nav>
+
+    <div class="tabpane" id="tab-programs">
+      <div class="filters">
+        <label class="chk"><input type="checkbox" id="fAnnot"> annotated only</label>
+        <label class="chk"><input type="checkbox" id="fSig"> meta-significant (FDR&lt;0.05)</label>
+        <label>trait
+          <select id="traitSel"><option value="">— cross-source meta —</option></select>
+        </label>
+        <span class="hint" id="progCount"></span>
+      </div>
+      <div class="tablewrap">
+        <table id="progTable">
+          <thead><tr>
+            <th data-k="num">#</th>
+            <th data-k="annotation">Program</th>
+            <th data-k="meta_pooled" class="num">pooled β</th>
+            <th data-k="meta_FDR" class="num">meta FDR</th>
+            <th data-k="meta_I2" class="num">I²</th>
+            <th data-k="xsrc">src</th>
+            <th data-k="best_program_P" class="num">best prog P</th>
+            <th class="genes">top genes</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tabpane" id="tab-traits">
+      <p class="paneintro">The 8 RA LoF phenotypes across both conditions. <b>Report the permutation
+        P, not Fisher.</b> QC-flagged traits are excluded from robust claims.</p>
+      <div class="tablewrap">
+        <table id="traitTable">
+          <thead><tr><th>trait</th><th>source</th><th>QC flag</th><th>cond</th>
+            <th>Fig 4C hit</th><th class="num">Fig 5a perm P</th><th>selected programs</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tabpane on" id="tab-network">
+      <iframe id="netframe" title="Interactive gene → program → trait network"
+              src="/network/"></iframe>
+    </div>
+
+    <div class="tabpane" id="tab-regulators">
+      <p class="paneintro">Genes whose Stage-B knockdown moves a program (a <b>regulates</b> edge).
+        <b>Shared</b> = recurs across QC-clean phenotypes — the candidate conserved regulators. β sign is
+        the regulatory direction; γ-sign is the predicted trait-risk direction.</p>
+      <div class="filters">
+        <label class="chk"><input type="checkbox" id="regShared"> shared only (≥2 clean phenotypes)</label>
+        <label>regulates program
+          <select id="regProg"><option value="">— any —</option></select>
+        </label>
+        <input id="regSearch" placeholder="find gene…" autocomplete="off">
+        <span class="hint" id="regCount"></span>
+      </div>
+      <div class="tablewrap">
+        <table id="regTable">
+          <thead><tr>
+            <th data-k="gene">gene</th>
+            <th data-k="sign">γ-sign</th>
+            <th data-k="n_programs" class="num">#prog</th>
+            <th data-k="n_clean_traits" class="num">clean/all</th>
+            <th data-k="conditions">cond</th>
+            <th class="genes">top targets (program, β)</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tabpane" id="tab-notes"><article id="notes"></article></div>
+  </section>
+
+  <section id="chat">
+    <div class="chathead">
+      <h2>Ask about the results</h2>
+      <p class="sub">Grounded in the pipeline data + web search for published knowledge.</p>
+    </div>
+    <div id="messages">
+      <div class="msg bot">
+        <p>Ask me things like:</p>
+        <ul class="examples">
+          <li>Which CD4 T-cell programs carry the RA LoF burden, and are they robust across sources?</li>
+          <li>Tell me about program P45 — what is S100A9's role in RA?</li>
+          <li>Is Backman seronegative RA reliable?</li>
+          <li>Does the rest vs stim48hr signal differ?</li>
+        </ul>
+      </div>
+    </div>
+    <form id="chatForm">
+      <textarea id="chatInput" rows="2" placeholder="Ask about a program, trait, or the biology…"></textarea>
+      <button type="submit" id="sendBtn">Send</button>
+    </form>
+  </section>
+</main>
+
+<!-- program detail drawer -->
+<aside id="drawer" class="hidden"><div class="drawer-inner"></div></aside>
+<div id="lightbox" class="hidden"><img><figcaption></figcaption></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

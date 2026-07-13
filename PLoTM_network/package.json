@@ -1,0 +1,26 @@
+{
+  "name": "proglof-network",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Interactive gene→program→trait network (React + TypeScript + D3-force) for the PLoTM results.",
+  "scripts": {
+    "export": "python3 scripts/export_network_data.py",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "d3-force": "^3.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/d3-force": "^3.0.10",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2"
+  }
+}

@@ -1,0 +1,31 @@
+CT	Program	Label
+GWCD4i_rest_pseudobulk	P2	Translation initiation
+GWCD4i_rest_pseudobulk	P4	Cell cycle (S/G2-M)
+GWCD4i_rest_pseudobulk	P5	Interferon response
+GWCD4i_rest_pseudobulk	P7	CD4 identity / TCR
+GWCD4i_rest_pseudobulk	P24	TNF-NFkB signalling
+GWCD4i_rest_pseudobulk	P25	Amino acid / mTORC1
+GWCD4i_rest_pseudobulk	P31	Actin-adhesion (stromal)
+GWCD4i_rest_pseudobulk	P32	Cytotoxic CD4 (GZMK+/EOMES+)
+GWCD4i_rest_pseudobulk	P35	IFN-alpha / inflammatory
+GWCD4i_rest_pseudobulk	P37	IL-2/STAT5 (weak)
+GWCD4i_rest_pseudobulk	P45	Myeloid activation (S100A9+)
+GWCD4i_rest_pseudobulk	P49	Prostaglandin-RANKL-Th2
+GWCD4i_rest_pseudobulk	P52	Collagen / IDO1
+GWCD4i_rest_pseudobulk	P54	Wound healing / TNF-NFkB
+GWCD4i_stim48_pseudobulk	P19	Effector cytokine (IL3/CSF2/GZMB)
+GWCD4i_stim48_pseudobulk	P21	Costim OX40 / TIGIT
+GWCD4i_stim48_pseudobulk	P22	Ribosome biogenesis / MYC
+GWCD4i_stim48_pseudobulk	P25	Translation / MYC
+GWCD4i_stim48_pseudobulk	P26	Cytotoxic CD4 (GZMK+/EOMES+)
+GWCD4i_stim48_pseudobulk	P31	IL-6 / IL-1 inflammatory
+GWCD4i_stim48_pseudobulk	P32	Myeloid / innate (weak)
+GWCD4i_stim48_pseudobulk	P33	NK-like cytotoxic (KLRK1/FCRL3)
+GWCD4i_stim48_pseudobulk	P35	IFN-gamma / immune effector
+GWCD4i_stim48_pseudobulk	P40	Tissue remodelling (MMP12/CCL18)
+GWCD4i_stim48_pseudobulk	P53	Type-I interferon (IFNA/IFNB)
+GWCD4i_rest_pseudobulk	P17	Effector/costim (CRTAM/4-1BB/CSF2)
+GWCD4i_rest_pseudobulk	P48	Tph-like (CXCL13/IL21)
+GWCD4i_stim48_pseudobulk	P1	Ribosome biogenesis/translation
+GWCD4i_stim48_pseudobulk	P57	Histone/mixed (weak)
+GWCD4i_stim48_pseudobulk	P58	Olfactory/noise

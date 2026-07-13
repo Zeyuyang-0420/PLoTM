@@ -1,0 +1,37 @@
+disease:
+  id: T1D
+  name: "Type 1 diabetes"
+perturbseq:
+  url: "https://virtualcellmodels.cziscience.com/dataset/genome-scale-tcell-perturb-seq"
+  pseudobulk_h5ad: data/perturbseq/perturbseq.pseudobulk_merged.h5ad
+  obs_map:
+    perturbed_gene: perturbed_gene_name
+    ntc_flag: guide_type
+    donor: donor_id
+    run: 10xrun_id
+    condition: culture_condition
+    keep_flag: keep_for_DE
+  conditions: [Rest, Stim48hr]
+lof:
+  posterior_dir: data/lof/GeneBayes_posterior
+  traits:
+    - { name: Genebass_T1D, source: genebass, phenocode: E10, class: binary }
+    - { name: Genebass_T1D_phecode, source: genebass, phenocode: 250.1, class: binary }
+    - { name: Backman_2021_T1D, source: backman, accession: GCST_VERIFY, class: binary }
+    - { name: Backman_2021_T1D_alt, source: backman, accession: GCST_VERIFY, class: binary }
+params:
+  K: 60
+  lof_threshold: q99
+  stageB_min_profiles: 4
+  fig5:
+    PN: 5
+    RN: 3
+    TOP: 200
+    NPERM: 5000
+    NPERM_OBS: 10000
+  trait_groups:
+    Group1_disease: [Genebass_T1D, Genebass_T1D_phecode, Backman_2021_T1D, Backman_2021_T1D_alt]
+compute:
+  ncores: 64
+  throttle: 80
+  gpu: true

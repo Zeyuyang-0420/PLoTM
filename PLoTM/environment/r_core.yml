@@ -1,0 +1,18 @@
+# R env — Stage B/C, Figure 4C, Figure 5a, multi-trait networks, annotation.
+# create: conda env create -p ./envs/r_core -f environment/r_core.yml
+name: proglof-r
+channels: [conda-forge, bioconda]
+dependencies:
+  - r-base=4.4
+  - r-data.table
+  - r-dplyr
+  - r-leaps            # regsubsets (Fig-5a best-subset regulator selection)
+  - r-ggplot2
+  - r-ggrepel
+  - bioconductor-limma
+  - bioconductor-edger
+  - r-boot
+  # optional, for src/06_annotation/annotate_programs.R (GO / hallmark enrichment):
+  - bioconductor-clusterprofiler
+  - bioconductor-org.hs.eg.db
+  - r-msigdbr

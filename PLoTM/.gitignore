@@ -1,0 +1,18 @@
+# data and results are large / regenerated — never commit
+data/
+results/
+envs/
+*.h5ad
+*.h5mu
+*.per_gene_estimates.tsv
+lof_thresholds.tsv
+
+# figures/outputs from runs (keep code, not artifacts)
+**/figures/*.png
+**/figures/*.pdf
+work/
+logs/
+__pycache__/
+*.pyc
+.Rhistory
+*.bak

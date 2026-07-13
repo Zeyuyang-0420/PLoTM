@@ -1,0 +1,21 @@
+# cNMF + scanpy env — Stage A program discovery and Perturb-seq input construction.
+# create: conda env create -p ./envs/cnmf -f environment/cnmf.yml
+# NOTE: a broken ~/.local pandas can shadow this env — always run with PYTHONNOUSERSITE=1.
+name: proglof-cnmf
+channels: [conda-forge, bioconda]
+dependencies:
+  - python=3.10
+  - numpy=1.26
+  - pandas=2.3
+  - scikit-learn=1.7
+  - scipy
+  - pyyaml
+  - pip
+  - matplotlib      # src/08_condition_analysis figures
+  - seaborn
+  - pip:
+      - cnmf==1.7.1
+      - scanpy==1.11.5
+      - anndata==0.11.4
+      - fastcluster
+# This env doubles as the analysis env (src/08_condition_analysis: pandas/scipy/matplotlib/seaborn).

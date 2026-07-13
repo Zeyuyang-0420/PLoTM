@@ -1,0 +1,81 @@
+# ============================================================================
+# PLoTM disease configuration — the ONE file an agent edits to run a new disease
+# ============================================================================
+# Everything downstream (download -> cNMF -> GeneBayes -> Stage B/C -> figures)
+# is driven from this file by drivers/run_disease.sh. Copy it to
+# config/<disease>.yaml, fill in the fields, and run:
+#     drivers/run_disease.sh config/<disease>.yaml all
+#
+# RA run using the DISEASE SINGLE-CELL cNMF basis (patient CD4 T cells) instead of the
+# Perturb-seq-native programs. Identical to config/RA.yaml except for the disease_singlecell
+# block below and params.K (the disease basis uses K=30).
+
+disease:
+  id: RA                       # short slug used in output paths
+  name: "Rheumatoid arthritis"
+
+# ---- 1. Perturb-seq dataset (the cNMF substrate) -------------------------------
+perturbseq:
+  # pseudobulk h5ad: one profile per (10xrun x donor x condition x guide), raw counts.
+  url: "https://virtualcellmodels.cziscience.com/dataset/genome-scale-tcell-perturb-seq"  # dataset page; put the direct file URL here
+  pseudobulk_h5ad: "data/perturbseq/perturbseq.pseudobulk_merged.h5ad"
+  # obs columns in the h5ad that map to the pipeline schema (edit for a new dataset):
+  obs_map:
+    perturbed_gene: perturbed_gene_name   # -> `gene`  (NTC rows renamed to "non-targeting")
+    ntc_flag: guide_type                  # value "non-targeting" marks controls
+    donor: donor_id                       # part of `gem_group` (batch)
+    run: 10xrun_id                        # part of `gem_group` (batch)
+    condition: culture_condition          # the stimulation/condition axis
+    keep_flag: keep_for_DE                # subset to True
+  # which conditions to build cNMF programs for (each becomes an independent CT):
+  conditions: [Rest, Stim48hr]
+  # CT naming: <id>_<condition_slug>_pseudobulk  is generated automatically.
+
+# ---- 1b. Disease single-cell cNMF basis (this is what makes this the RA-programs run) --------
+disease_singlecell:
+  rds:   "data/disease_sc/RA_CD4T.rds"       # Seurat .rds (patient CD4 T cells, raw counts)
+  counts_layer: counts.1
+  gene_id: symbol
+  K: 30
+  intersect_perturb_measured: true
+  ct_name: RA_CD4T
+
+# ---- 2. LoF genetics: phenotypes x source (2 independent sources) --------------
+# Each phenotype gets an inverse-variance gene-burden posterior (GeneBayes). Keep
+# GeneBass and Backman SEPARATE (they are not independent cohorts) — the pipeline
+# reports within-source and cross-source evidence separately.
+lof:
+  posterior_dir: "data/lof/GeneBayes_posterior"
+  traits:
+    - { name: Genebass_RF,        source: genebass, phenocode: "RF_or_similar",  class: continuous }
+    - { name: Genebass_RA_custom, source: genebass, phenocode: "custom_RA",      class: binary }
+    - { name: Genebass_RA_M06,    source: genebass, phenocode: "M06",            class: binary }
+    - { name: Backman_2021_RA,    source: backman,  accession: "GCST_xxxxxx",    class: binary }
+    - { name: Backman_2021_RA_M06,source: backman,  accession: "GCST_xxxxxx",    class: binary }
+    - { name: Backman_2021_RA_alt,source: backman,  accession: "GCST_xxxxxx",    class: binary }
+  # QC gates auto-flag traits (do NOT drop silently): a posterior is flagged
+  #   PRIOR_DOMINATED if corr(post_mean, prior_mean) > 0.95
+  #   SIGN_DEGENERATE if <2% or >98% of gamma are negative
+  # Flagged traits are still produced but excluded from meta-analysis.
+
+# ---- 3. Analysis parameters ----------------------------------------------------
+params:
+  K: 60                        # cNMF programs
+  lof_threshold: q99           # per-trait |gamma| cutoff: "q99" (recommended; scale-robust) or a number
+  stageB_min_profiles: 4       # per-gene profile gate in Stage B (pseudobulk: ~7/gene -> use 4, not 10)
+  fig5:
+    PN: 5                      # programs kept by program-burden
+    RN: 3                      # regulator programs (best-subset)
+    TOP: 200                   # top-loading genes defining a program
+    NPERM: 5000                # Fig-5a permutation null
+    NPERM_OBS: 10000           # s_het-matched resamples for the observed program ranking
+  # condition-comparison groups (for the multi-trait networks + meta-analysis):
+  trait_groups:
+    Group1_disease: [Backman_2021_RA, Backman_2021_RA_M06, Backman_2021_RA_alt, Genebass_RA_custom, Genebass_RA_M06]
+    Group2_endophenotype: [Genebass_RF]
+
+# ---- 4. Compute ----------------------------------------------------------------
+compute:
+  ncores: 64                   # cNMF factorize workers
+  throttle: 80                 # concurrent R processes in Stage C / Fig-5 perms
+  gpu: true                    # GeneBayes needs a CUDA GPU

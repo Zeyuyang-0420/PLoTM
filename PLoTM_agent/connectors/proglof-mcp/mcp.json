@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "proglof": {
+      "command": "python",
+      "args": ["/ABSOLUTE/PATH/TO/PLoTM_agent/connectors/proglof-mcp/server.py"],
+      "env": {
+        "PROGLOF_HOME": "/ABSOLUTE/PATH/TO/PLoTM",
+        "PROGLOF_PY": "/ABSOLUTE/PATH/TO/envs/cnmf/bin/python",
+        "PROGLOF_RSCRIPT": "/ABSOLUTE/PATH/TO/envs/r_core/bin/Rscript",
+        "PROGLOF_RESULTS": "",
+        "PROGLOF_REMOTE": "",
+        "PROGLOF_DRY_RUN": ""
+      }
+    }
+  }
+}

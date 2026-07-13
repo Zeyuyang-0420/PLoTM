@@ -1,0 +1,9 @@
+# PLoTM explorer backend. Install into a venv/conda env, then run:
+#   uvicorn server:app --port 8080
+fastapi>=0.110
+uvicorn[standard]>=0.29
+anthropic>=0.40
+python-dotenv>=1.0
+pydantic>=2
+# build_demo_data.py only (already-generated data/demo_data.json ships, so this is optional at serve time):
+pandas>=2.0

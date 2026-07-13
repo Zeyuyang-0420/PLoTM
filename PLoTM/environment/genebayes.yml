@@ -1,0 +1,17 @@
+# GeneBayes env — gene-level LoF posterior gamma from exome burden summary stats (GPU).
+# create: conda env create -p ./envs/genebayes -f environment/genebayes.yml
+# Requires a CUDA GPU (torch cu121). See src/01_lof_posterior/build_genebayes_env.sh for the
+# upstream GeneBayes checkout the run script calls.
+name: proglof-genebayes
+channels: [conda-forge]
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - torch==2.5.1
+      - ngboost==0.3.13
+      - xgboost==1.7.6
+      - numpy
+      - pandas
+      - scipy
+      - pyyaml
